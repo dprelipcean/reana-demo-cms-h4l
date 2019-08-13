@@ -191,7 +191,29 @@ Using CWL:
 Running the example on REANA cloud
 ==================================
 
-**FIXME**
+.. code-block:: console
+
+    $ # create new virtual environment
+    $ virtualenv ~/.virtualenvs/myreana
+    $ source ~/.virtualenvs/myreana/bin/activate
+    $ # install REANA client
+    $ pip install reana-client
+    $ # connect to some REANA cloud instance
+    $ export REANA_SERVER_URL=https://reana.cern.ch/
+    $ export REANA_ACCESS_TOKEN=XXXXXXX
+    $ # create new workflow
+    $ reana-client create -f reana.yaml
+    $ export REANA_WORKON=workflow
+    $ # upload all code and inputs
+    $ reana-client upload ./code ./input_data
+    $ # start computational workflow
+    $ reana-client start
+    $ # ... should be finished in about a minute
+    $ reana-client status
+    $ # list workspace files
+    $ reana-client ls
+    $ # download output results
+    $ reana-client download results/plot.png
 
 Contributors
 ============

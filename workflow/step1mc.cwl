@@ -6,14 +6,14 @@ baseCommand: /bin/zsh
 requirements:
   DockerRequirement:
     dockerPull:
-      clelange/cmssw:5_3_32
+      cmsopendata/cmssw_5_3_32
   InitialWorkDirRequirement:
     listing:
       - $(inputs.code)
-      - $(inputs.inputs)
+      - $(inputs.input_data)
 
 inputs:
-  inputs:
+  input_data:
     type: Directory
   code:
     type: Directory
@@ -31,8 +31,12 @@ outputs:
 arguments:
   - prefix: -c
     valueFrom: |
-      cp -r ../../code/HiggsExample20112012 .; \
+      source /opt/cms/cmsset_default.sh ;\
+      scramv1 project CMSSW CMSSW_5_3_32 ;\
+      cd CMSSW_5_3_32/src ;\
+      eval `scramv1 runtime -sh` ;\
+      cp -r $(inputs.code.path)/HiggsExample20112012 .; \
       scram b; \
-      cd ../../code/HiggsExample20112012/Level3; \
-      mkdir -p ../../../outputs; \
+      cd $(inputs.code.path)/HiggsExample20112012/Level3; \
+      mkdir -p ../../outputs; \
       cmsRun demoanalyzer_cfg_level3MC.py
